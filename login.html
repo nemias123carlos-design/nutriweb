@@ -8,85 +8,42 @@
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
         body {
             min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            display: flex; align-items: center; justify-content: center;
             background: linear-gradient(135deg, #0F766E 0%, #0369A1 100%);
         }
         .container {
-            background: white;
-            padding: 40px;
-            border-radius: 16px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            width: 100%;
-            max-width: 400px;
+            background: white; padding: 40px; border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3); width: 100%; max-width: 400px;
         }
-        h1 {
-            color: #0F766E;
-            text-align: center;
-            margin-bottom: 30px;
-        }
-        .form-group {
-            margin-bottom: 20px;
-        }
-        label {
-            display: block;
-            margin-bottom: 8px;
-            color: #334155;
-            font-weight: 500;
-        }
+        h1 { color: #0F766E; text-align: center; margin-bottom: 30px; }
+        .form-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; color: #334155; font-weight: 500; }
         input {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid #E2E8F0;
-            border-radius: 8px;
-            font-size: 14px;
+            width: 100%; padding: 12px; border: 2px solid #E2E8F0;
+            border-radius: 8px; font-size: 14px;
         }
-        input:focus {
-            outline: none;
-            border-color: #0F766E;
-        }
+        input:focus { outline: none; border-color: #0F766E; }
         button {
-            width: 100%;
-            padding: 13px;
-            background: #0F766E;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 15px;
-            font-weight: 600;
-            cursor: pointer;
-            margin-top: 10px;
+            width: 100%; padding: 13px; background: #0F766E; color: white;
+            border: none; border-radius: 8px; font-size: 15px;
+            font-weight: 600; cursor: pointer; margin-top: 10px;
         }
         button:hover { background: #0D5F58; }
         button:disabled { background: #94A3B8; cursor: not-allowed; }
         .alert {
-            padding: 12px;
-            border-radius: 8px;
-            margin-bottom: 15px;
-            font-size: 14px;
-            display: none;
+            padding: 12px; border-radius: 8px; margin-bottom: 15px;
+            font-size: 14px; display: none;
         }
         .alert.error { background: #FEE2E2; color: #991B1B; }
         .alert.success { background: #D1FAE5; color: #065F46; }
-        .link {
-            text-align: center;
-            margin-top: 20px;
-            font-size: 14px;
-            color: #64748B;
-        }
-        .link a {
-            color: #0F766E;
-            text-decoration: none;
-            cursor: pointer;
-        }
+        .link { text-align: center; margin-top: 20px; font-size: 14px; color: #64748B; }
+        .link a { color: #0F766E; text-decoration: none; cursor: pointer; }
         .hidden { display: none; }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>🥗 NutriWeb</h1>
-
         <div id="alert" class="alert"></div>
 
         <!-- LOGIN -->
@@ -103,9 +60,7 @@
                 </div>
                 <button type="submit">Entrar</button>
             </form>
-            <div class="link">
-                ¿No tienes cuenta? <a onclick="showRegister()">Regístrate</a>
-            </div>
+            <div class="link">¿No tienes cuenta? <a onclick="showRegister()">Regístrate</a></div>
         </div>
 
         <!-- REGISTRO -->
@@ -130,9 +85,7 @@
                 </div>
                 <button type="submit">Crear Cuenta</button>
             </form>
-            <div class="link">
-                ¿Ya tienes cuenta? <a onclick="showLogin()">Inicia Sesión</a>
-            </div>
+            <div class="link">¿Ya tienes cuenta? <a onclick="showLogin()">Inicia Sesión</a></div>
         </div>
 
         <!-- USUARIO LOGUEADO -->
@@ -144,7 +97,6 @@
         </div>
     </div>
 
-    <!-- FIREBASE -->
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
@@ -191,7 +143,7 @@
             document.getElementById('userEmail').textContent = user.email;
         }
 
-        // REGISTRO
+        // ✅ REGISTRO SIN VERIFICACIÓN DE EMAIL
         document.getElementById('registerForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const name = document.getElementById('regName').value.trim();
@@ -199,22 +151,20 @@
             const pass = document.getElementById('regPassword').value;
             const pass2 = document.getElementById('regPassword2').value;
 
-            if (pass !== pass2) {
-                showAlert('Las contraseñas no coinciden');
-                return;
-            }
+            if (pass !== pass2) { showAlert('Las contraseñas no coinciden'); return; }
 
             try {
                 const cred = await auth.createUserWithEmailAndPassword(email, pass);
                 await cred.user.updateProfile({ displayName: name });
 
+                // Guardar en Firestore (sin verificar email)
                 await db.collection('usuarios').doc(cred.user.uid).set({
                     nombre: name,
                     email: email,
                     creado: new Date().toISOString()
                 });
 
-                showAlert('✅ Cuenta creada', 'success');
+                showAlert('✅ Cuenta creada correctamente', 'success');
                 setTimeout(() => showLogin(), 1500);
 
             } catch (err) {
@@ -222,7 +172,7 @@
             }
         });
 
-        // LOGIN
+        // ✅ LOGIN SIN VERIFICACIÓN DE EMAIL
         document.getElementById('loginForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const email = document.getElementById('loginEmail').value.trim();
@@ -236,18 +186,11 @@
             }
         });
 
-        // CERRAR SESIÓN
-        function cerrarSesion() {
-            auth.signOut();
-        }
+        function cerrarSesion() { auth.signOut(); }
 
-        // VERIFICAR SESIÓN
+        // Verificar sesión al cargar
         auth.onAuthStateChanged(user => {
-            if (user) {
-                showUser(user);
-            } else {
-                showLogin();
-            }
+            if (user) { showUser(user); } else { showLogin(); }
         });
     </script>
 </body>
