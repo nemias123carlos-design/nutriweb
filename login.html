@@ -5,84 +5,48 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NutriWeb - Acceso</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, sans-serif; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
         body {
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
             background: linear-gradient(135deg, #0F766E 0%, #0369A1 100%);
-            padding: 20px;
         }
-        .auth-container {
+        .container {
             background: white;
             padding: 40px;
             border-radius: 16px;
             box-shadow: 0 20px 60px rgba(0,0,0,0.3);
             width: 100%;
-            max-width: 420px;
-            animation: slideUp 0.5s ease;
+            max-width: 400px;
         }
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .logo {
+        h1 {
+            color: #0F766E;
             text-align: center;
             margin-bottom: 30px;
         }
-        .logo h1 {
-            color: #0F766E;
-            font-size: 28px;
-        }
-        .logo p {
-            color: #64748B;
-            font-size: 14px;
-            margin-top: 5px;
-        }
-        .tabs {
-            display: flex;
-            margin-bottom: 25px;
-            border-bottom: 2px solid #E2E8F0;
-        }
-        .tab {
-            flex: 1;
-            padding: 12px;
-            text-align: center;
-            cursor: pointer;
-            color: #64748B;
-            font-weight: 600;
-            transition: all 0.3s;
-            border-bottom: 3px solid transparent;
-            margin-bottom: -2px;
-        }
-        .tab.active {
-            color: #0F766E;
-            border-bottom-color: #0F766E;
-        }
         .form-group {
-            margin-bottom: 18px;
+            margin-bottom: 20px;
         }
         label {
             display: block;
-            margin-bottom: 6px;
+            margin-bottom: 8px;
             color: #334155;
-            font-size: 14px;
             font-weight: 500;
         }
         input {
             width: 100%;
-            padding: 12px 14px;
+            padding: 12px;
             border: 2px solid #E2E8F0;
             border-radius: 8px;
             font-size: 14px;
-            transition: border-color 0.3s;
         }
         input:focus {
             outline: none;
             border-color: #0F766E;
         }
-        .btn {
+        button {
             width: 100%;
             padding: 13px;
             background: #0F766E;
@@ -92,11 +56,10 @@
             font-size: 15px;
             font-weight: 600;
             cursor: pointer;
-            transition: background 0.3s;
             margin-top: 10px;
         }
-        .btn:hover { background: #0D5F58; }
-        .btn:disabled { background: #94A3B8; cursor: not-allowed; }
+        button:hover { background: #0D5F58; }
+        button:disabled { background: #94A3B8; cursor: not-allowed; }
         .alert {
             padding: 12px;
             border-radius: 8px;
@@ -104,137 +67,92 @@
             font-size: 14px;
             display: none;
         }
-        .alert.error {
-            background: #FEE2E2;
-            color: #991B1B;
-            border: 1px solid #FECACA;
-        }
-        .alert.success {
-            background: #D1FAE5;
-            color: #065F46;
-            border: 1px solid #A7F3D0;
-        }
+        .alert.error { background: #FEE2E2; color: #991B1B; }
+        .alert.success { background: #D1FAE5; color: #065F46; }
         .link {
             text-align: center;
-            margin-top: 15px;
-            font-size: 13px;
+            margin-top: 20px;
+            font-size: 14px;
             color: #64748B;
         }
         .link a {
             color: #0F766E;
             text-decoration: none;
-            font-weight: 600;
             cursor: pointer;
         }
-        .hidden { display: none !important; }
-        .spinner {
-            display: inline-block;
-            width: 16px;
-            height: 16px;
-            border: 2px solid rgba(255,255,255,0.3);
-            border-radius: 50%;
-            border-top-color: white;
-            animation: spin 0.8s linear infinite;
-            margin-right: 8px;
-            vertical-align: middle;
-        }
-        @keyframes spin { to { transform: rotate(360deg); } }
-        .user-info {
-            text-align: center;
-            padding: 20px;
-        }
-        .user-info h2 { color: #0F766E; margin-bottom: 10px; }
-        .user-info p { color: #64748B; margin-bottom: 20px; }
+        .hidden { display: none; }
     </style>
 </head>
 <body>
-    <div class="auth-container">
-        <div class="logo">
-            <h1>🥗 NutriWeb</h1>
-            <p>Sistema de gestión nutricional</p>
-        </div>
+    <div class="container">
+        <h1>🥗 NutriWeb</h1>
 
         <div id="alert" class="alert"></div>
 
-        <!-- VISTA PRINCIPAL (LOGIN/REGISTRO) -->
-        <div id="mainView">
-            <div class="tabs" id="tabs">
-                <div class="tab active" data-tab="login">Iniciar Sesión</div>
-                <div class="tab" data-tab="register">Registrarse</div>
-            </div>
-
-            <!-- FORMULARIO LOGIN -->
+        <!-- LOGIN -->
+        <div id="loginView">
+            <h2 style="margin-bottom: 20px; color: #334155;">Iniciar Sesión</h2>
             <form id="loginForm">
                 <div class="form-group">
-                    <label>Correo electrónico</label>
-                    <input type="email" id="loginEmail" required placeholder="tu@email.com">
+                    <label>Email</label>
+                    <input type="email" id="loginEmail" required>
                 </div>
                 <div class="form-group">
                     <label>Contraseña</label>
-                    <input type="password" id="loginPassword" required placeholder="••••••••" minlength="6">
+                    <input type="password" id="loginPassword" required minlength="6">
                 </div>
-                <button type="submit" class="btn" id="btnLogin">Iniciar Sesión</button>
-                <div class="link">
-                    <a onclick="showForgotPassword()">¿Olvidaste tu contraseña?</a>
-                </div>
+                <button type="submit">Entrar</button>
             </form>
-
-            <!-- FORMULARIO REGISTRO -->
-            <form id="registerForm" class="hidden">
-                <div class="form-group">
-                    <label>Nombre completo</label>
-                    <input type="text" id="regName" required placeholder="Juan Pérez">
-                </div>
-                <div class="form-group">
-                    <label>Correo electrónico</label>
-                    <input type="email" id="regEmail" required placeholder="tu@email.com">
-                </div>
-                <div class="form-group">
-                    <label>Contraseña (mínimo 6 caracteres)</label>
-                    <input type="password" id="regPassword" required placeholder="••••••••" minlength="6">
-                </div>
-                <div class="form-group">
-                    <label>Confirmar contraseña</label>
-                    <input type="password" id="regPassword2" required placeholder="••••••••" minlength="6">
-                </div>
-                <button type="submit" class="btn" id="btnRegister">Crear cuenta</button>
-            </form>
+            <div class="link">
+                ¿No tienes cuenta? <a onclick="showRegister()">Regístrate</a>
+            </div>
         </div>
 
-        <!-- FORMULARIO RECUPERAR -->
-        <form id="forgotForm" class="hidden">
-            <div class="form-group">
-                <label>Correo electrónico</label>
-                <input type="email" id="forgotEmail" required placeholder="tu@email.com">
-            </div>
-            <button type="submit" class="btn" id="btnForgot">Enviar enlace de recuperación</button>
+        <!-- REGISTRO -->
+        <div id="registerView" class="hidden">
+            <h2 style="margin-bottom: 20px; color: #334155;">Crear Cuenta</h2>
+            <form id="registerForm">
+                <div class="form-group">
+                    <label>Nombre</label>
+                    <input type="text" id="regName" required>
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="regEmail" required>
+                </div>
+                <div class="form-group">
+                    <label>Contraseña</label>
+                    <input type="password" id="regPassword" required minlength="6">
+                </div>
+                <div class="form-group">
+                    <label>Repetir Contraseña</label>
+                    <input type="password" id="regPassword2" required minlength="6">
+                </div>
+                <button type="submit">Crear Cuenta</button>
+            </form>
             <div class="link">
-                <a onclick="showLogin()">← Volver al login</a>
+                ¿Ya tienes cuenta? <a onclick="showLogin()">Inicia Sesión</a>
             </div>
-        </form>
+        </div>
 
-        <!-- VISTA USUARIO LOGUEADO -->
+        <!-- USUARIO LOGUEADO -->
         <div id="userView" class="hidden">
-            <div class="user-info">
-                <h2>✅ Bienvenido</h2>
-                <p id="userDisplayName">Usuario</p>
-                <p id="userEmail" style="font-size: 12px;"></p>
-                <button class="btn" onclick="cerrarSesion()">🚪 Cerrar Sesión</button>
-            </div>
+            <h2 style="margin-bottom: 20px; color: #0F766E;">✅ Bienvenido</h2>
+            <p id="userName" style="text-align: center; margin-bottom: 10px;"></p>
+            <p id="userEmail" style="text-align: center; color: #64748B; margin-bottom: 30px;"></p>
+            <button onclick="cerrarSesion()">Cerrar Sesión</button>
         </div>
     </div>
 
-    <!-- FIREBASE SDK -->
+    <!-- FIREBASE -->
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
 
     <script>
-        // 🔑 TU CONFIGURACIÓN DE FIREBASE
         const firebaseConfig = {
             apiKey: "AIzaSyB9wbdqiexvx646YEvEQZPPSYgCnbyUEU0",
             authDomain: "nutriweb-12a1f.firebaseapp.com",
-            databaseURL: "https://nutriweb-12a1f-default-rtdb.firebaseio.com",
             projectId: "nutriweb-12a1f",
             storageBucket: "nutriweb-12a1f.firebasestorage.app",
             messagingSenderId: "400054434677",
@@ -245,52 +163,35 @@
         const auth = firebase.auth();
         const db = firebase.firestore();
 
-        // ============ UTILIDADES ============
         function showAlert(msg, type = 'error') {
             const alert = document.getElementById('alert');
             alert.textContent = msg;
             alert.className = `alert ${type}`;
             alert.style.display = 'block';
-            setTimeout(() => alert.style.display = 'none', 5000);
-        }
-
-        function setLoading(btnId, loading) {
-            const btn = document.getElementById(btnId);
-            if (loading) {
-                btn.dataset.originalText = btn.innerHTML;
-                btn.innerHTML = '<span class="spinner"></span>Procesando...';
-                btn.disabled = true;
-            } else {
-                btn.innerHTML = btn.dataset.originalText;
-                btn.disabled = false;
-            }
-        }
-
-        // ============ TABS ============
-        document.querySelectorAll('.tab').forEach(tab => {
-            tab.addEventListener('click', () => {
-                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-                tab.classList.add('active');
-                const tabName = tab.dataset.tab;
-                document.getElementById('loginForm').classList.toggle('hidden', tabName !== 'login');
-                document.getElementById('registerForm').classList.toggle('hidden', tabName !== 'register');
-                document.getElementById('alert').style.display = 'none';
-            });
-        });
-
-        function showForgotPassword() {
-            document.getElementById('mainView').classList.add('hidden');
-            document.getElementById('forgotForm').classList.remove('hidden');
-            document.getElementById('alert').style.display = 'none';
+            setTimeout(() => alert.style.display = 'none', 4000);
         }
 
         function showLogin() {
-            document.getElementById('mainView').classList.remove('hidden');
-            document.getElementById('forgotForm').classList.add('hidden');
-            document.querySelector('.tab[data-tab="login"]').click();
+            document.getElementById('loginView').classList.remove('hidden');
+            document.getElementById('registerView').classList.add('hidden');
+            document.getElementById('userView').classList.add('hidden');
         }
 
-        // ============ REGISTRO ============
+        function showRegister() {
+            document.getElementById('loginView').classList.add('hidden');
+            document.getElementById('registerView').classList.remove('hidden');
+            document.getElementById('userView').classList.add('hidden');
+        }
+
+        function showUser(user) {
+            document.getElementById('loginView').classList.add('hidden');
+            document.getElementById('registerView').classList.add('hidden');
+            document.getElementById('userView').classList.remove('hidden');
+            document.getElementById('userName').textContent = user.displayName || 'Usuario';
+            document.getElementById('userEmail').textContent = user.email;
+        }
+
+        // REGISTRO
         document.getElementById('registerForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const name = document.getElementById('regName').value.trim();
@@ -303,12 +204,6 @@
                 return;
             }
 
-            if (pass.length < 6) {
-                showAlert('La contraseña debe tener al menos 6 caracteres');
-                return;
-            }
-
-            setLoading('btnRegister', true);
             try {
                 const cred = await auth.createUserWithEmailAndPassword(email, pass);
                 await cred.user.updateProfile({ displayName: name });
@@ -316,120 +211,42 @@
                 await db.collection('usuarios').doc(cred.user.uid).set({
                     nombre: name,
                     email: email,
-                    rol: 'usuario',
-                    fecha_registro: firebase.firestore.FieldValue.serverTimestamp(),
-                    activo: true,
-                    uid: cred.user.uid
+                    creado: new Date().toISOString()
                 });
 
-                await cred.user.sendEmailVerification();
-
-                showAlert('✅ Cuenta creada. Revisa tu email para verificar.', 'success');
-                setTimeout(() => showLogin(), 2000);
+                showAlert('✅ Cuenta creada', 'success');
+                setTimeout(() => showLogin(), 1500);
 
             } catch (err) {
-                console.error(err);
-                showAlert(traducirError(err.code));
-            } finally {
-                setLoading('btnRegister', false);
+                showAlert(err.message);
             }
         });
 
-        // ============ LOGIN ============
+        // LOGIN
         document.getElementById('loginForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const email = document.getElementById('loginEmail').value.trim();
             const pass = document.getElementById('loginPassword').value;
 
-            setLoading('btnLogin', true);
             try {
-                const cred = await auth.signInWithEmailAndPassword(email, pass);
-
-                if (!cred.user.emailVerified) {
-                    showAlert('Debes verificar tu email primero. Revisa tu bandeja.');
-                    await auth.signOut();
-                    return;
-                }
-
-                const userDoc = await db.collection('usuarios').doc(cred.user.uid).get();
-                if (!userDoc.exists || !userDoc.data().activo) {
-                    showAlert('Tu cuenta ha sido desactivada.');
-                    await auth.signOut();
-                    return;
-                }
-
-                await db.collection('usuarios').doc(cred.user.uid).update({
-                    ultima_conexion: firebase.firestore.FieldValue.serverTimestamp()
-                });
-
-                showAlert('✅ Inicio de sesión exitoso', 'success');
-
+                await auth.signInWithEmailAndPassword(email, pass);
+                showAlert('✅ Bienvenido', 'success');
             } catch (err) {
-                console.error(err);
-                showAlert(traducirError(err.code));
-            } finally {
-                setLoading('btnLogin', false);
+                showAlert('Email o contraseña incorrectos');
             }
         });
 
-        // ============ RECUPERAR CONTRASEÑA ============
-        document.getElementById('forgotForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const email = document.getElementById('forgotEmail').value.trim();
-
-            setLoading('btnForgot', true);
-            try {
-                await auth.sendPasswordResetEmail(email);
-                showAlert('✅ Enlace enviado a tu email', 'success');
-                setTimeout(() => showLogin(), 3000);
-            } catch (err) {
-                showAlert(traducirError(err.code));
-            } finally {
-                setLoading('btnForgot', false);
-            }
-        });
-
-        // ============ CERRAR SESIÓN ============
+        // CERRAR SESIÓN
         function cerrarSesion() {
-            auth.signOut().then(() => {
-                showAlert('Sesión cerrada', 'success');
-            });
+            auth.signOut();
         }
 
-        // ============ TRADUCIR ERRORES ============
-        function traducirError(code) {
-            const errores = {
-                'auth/email-already-in-use': 'Este email ya está registrado',
-                'auth/invalid-email': 'Email inválido',
-                'auth/weak-password': 'La contraseña debe tener al menos 6 caracteres',
-                'auth/user-not-found': 'Usuario no encontrado',
-                'auth/wrong-password': 'Contraseña incorrecta',
-                'auth/invalid-credential': 'Credenciales inválidas',
-                'auth/too-many-requests': 'Demasiados intentos. Intenta más tarde',
-                'auth/network-request-failed': 'Error de conexión a internet',
-                'auth/popup-closed-by-user': 'Ventana cerrada antes de completar'
-            };
-            return errores[code] || 'Error: ' + code;
-        }
-
-        // ============ VERIFICAR SESIÓN AL CARGAR ============
+        // VERIFICAR SESIÓN
         auth.onAuthStateChanged(user => {
             if (user) {
-                if (user.emailVerified) {
-                    // Mostrar vista de usuario logueado
-                    document.getElementById('mainView').classList.add('hidden');
-                    document.getElementById('forgotForm').classList.add('hidden');
-                    document.getElementById('userView').classList.remove('hidden');
-                    document.getElementById('userDisplayName').textContent = user.displayName || 'Usuario';
-                    document.getElementById('userEmail').textContent = user.email;
-                } else {
-                    showAlert('Verifica tu email primero');
-                    auth.signOut();
-                }
+                showUser(user);
             } else {
-                // Mostrar vista de login
-                document.getElementById('mainView').classList.remove('hidden');
-                document.getElementById('userView').classList.add('hidden');
+                showLogin();
             }
         });
     </script>
